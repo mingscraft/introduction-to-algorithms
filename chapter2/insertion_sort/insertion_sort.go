@@ -5,15 +5,23 @@ Output: A permutation(reordering) <a1', a2', ....,an'> of the input sequence suc
  */
 package insertion_sort
 
+type SortOrder int
+
+const (
+	Ascending SortOrder = iota + 1
+	Descending
+)
+
 // InsertionSort sort array using insertion sort.
-func InsertionSort(arr []int) []int {
+func InsertionSort(arr []int, sortOrder SortOrder) []int {
+
 	j := 1
 	for j < len(arr) {
 		key := arr[j]
 
 		// insert arr[j]  into the sorted sequence A[1..j-1].
 		i := j - 1
-		for i >= 0 && arr[i] > key {
+		for i >= 0 && shouldMoveRight(arr[i], key, sortOrder) {
 			arr[i + 1] = arr[i]
 			i = i - 1
 		}
@@ -23,4 +31,13 @@ func InsertionSort(arr []int) []int {
 	}
 
 	return arr
+}
+
+// shouldMoveRight should move i (j - 1) to right
+func shouldMoveRight(a int, b int, sortOrder SortOrder) bool {
+	if sortOrder == Ascending {
+		return a > b
+	}
+
+	return b > a
 }
